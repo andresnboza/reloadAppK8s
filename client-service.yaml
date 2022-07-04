@@ -12,3 +12,12 @@ spec:
     protocol: TCP
   selector:
     app: reload-app-client
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reload-app-client-service-external
+  namespace: kube-system
+spec:
+  type: ExternalName
+  externalName: reload-app-client.default.svc.cluster.local

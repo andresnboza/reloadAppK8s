@@ -34,3 +34,8 @@ client2:
 	kubectl apply -f client.yaml
 ingress:
 	kubectl apply -f ingress.yml --validate=false
+
+push:
+	git add .
+	git commit -m "update"
+	git push
