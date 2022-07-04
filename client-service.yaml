@@ -20,4 +20,4 @@ metadata:
   namespace: kube-system
 spec:
   type: ExternalName
-  externalName: reload-app-client.default.svc.cluster.local
+  externalName: reload-app-client-service.default.svc.cluster.local
