@@ -6,6 +6,8 @@ mongo:
 	kubectl apply -f mongodb-pvc.yaml
 	kubectl apply -f mongodb-service.yaml
 
+k8s: server client
+
 server: 
 	kubectl apply -f server-deployment.yaml
 	kubectl apply -f server-service.yaml
@@ -13,7 +15,9 @@ server:
 client: 
 	kubectl apply -f client-deployment.yaml
 	kubectl apply -f client-service.yaml
-	kubectl apply -f client-load-balancer-service.yaml
+
+ingress:
+	kubectl apply -f ingress.yml
 	kubectl get svc -owide
 
 deleteClient:

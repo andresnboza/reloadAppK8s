@@ -1,41 +1,18 @@
-apiVersion: apps/v1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: reload-server
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt
-    nginx.ingress.kubernetes.io/cors-allow-credentials: 'true'
-    nginx.ingress.kubernetes.io/cors-allow-methods: '*'
-    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
-    nginx.ingress.kubernetes.io/enable-cors: 'true'
-    nginx.ingress.kubernetes.io/proxy-body-size: "200m"
+  name: reload-app-client-ingress
+  namespace: kube-system
 spec:
+  ingressClassName: nginx
   rules:
+    - host: reloadapp.cr.146.190.0.144.nip.io
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: reload-server 
-              servicePort: 80
----
-apiVersion: apps/v1
-kind: Ingress
-metadata:
-  name: reload-client
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt
-    nginx.ingress.kubernetes.io/cors-allow-credentials: 'true'
-    nginx.ingress.kubernetes.io/cors-allow-methods: '*'
-    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
-    nginx.ingress.kubernetes.io/enable-cors: 'true'
-    nginx.ingress.kubernetes.io/proxy-body-size: "200m"
-spec:
-  rules:
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: reload-client
-              servicePort: 80
+              service:
+                name: reload-app-client-service
+                port:
+                  number: 80
