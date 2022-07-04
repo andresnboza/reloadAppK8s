@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: reload-app-server
+  labels:
+    app: reload-app-server
+spec:
+  ports:
+    - port: 3000
+  selector:
+    app: reload-app-server
+  clusterIP: None
