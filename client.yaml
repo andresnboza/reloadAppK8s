@@ -1,50 +1,46 @@
 ---
 apiVersion: apps/v1
-kind: Deployment 
-metadata: 
-  name: reload-app-client-deployment
+kind: Deployment
+metadata:
+  name: reload-client
 spec:
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 1
-  selector: 
-    matchLabels: 
-      web: reload-app-client
-  replicas: 2 # tells deployment to run 2 pods matching the template 
-  template: 
-    metadata: 
-      labels: 
-        web: reload-app-client 
-    spec: 
-      containers: 
-      - name: reload-app-client
-        image: andresnboza/reload-app-client
-        ports: 
-        - containerPort: 80
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 80
-          initialDelaySeconds: 3
-          periodSeconds: 3  
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 80
-          initialDelaySeconds: 5
-          periodSeconds: 5
-          successThreshold: 1      
---- 
-kind: Service 
-apiVersion: v1 
-metadata: 
-  name: reload-app-client-service 
-spec: 
-  selector: 
-    web: angular
-  ports: 
-  - port: 80
-    targetPort: 80
-  type: NodePort 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reload-client
+  template:
+    metadata:
+      labels:
+        app: reload-client
+    spec:
+      imagePullSecrets:
+        - name: aws-registry  
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+        - name: reload-client
+          image: andresnboza/reload-app-client
+          resources:
+            limits:
+              cpu: 250m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 512Mi
+          ports:
+            - containerPort: 3000
+              name: reload-client       
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reload-client
+spec:
+  type: ClusterIP
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 3000
+  selector:
+    app: reload-client

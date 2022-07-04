@@ -23,9 +23,10 @@ clientSecrets:
 	kubectl create secret generic angular-app --from-file=.env=.env
 
 
-version2: server2 client2
+version2: server2 client2 ingress
 server2:
 	kubectl apply -f server.yaml
-	kubectl get svc -owide
 client2:
 	kubectl apply -f client.yaml
+ingress:
+	kubectl apply -f ingress.yml --validate=false
