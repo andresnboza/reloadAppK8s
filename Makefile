@@ -45,3 +45,13 @@ push:
 
 deleteIngress:
 	kubectl delete ingress reload-app-client-ingress -n kube-system
+
+deleteAll:
+	@echo 'Delete of client'
+	kubectl delete deployment reload-app-client -n default || true
+	kubectl delete ingress reload-app-client-ingress -n kube-system || true
+	kubectl delete service reload-app-client-service-external -n kube-system  || true
+	kubectl delete service reload-app-client-service -n default || true
+	@echo 'Delete of server'
+	kubectl delete deployment reload-app-server -n default || true
+	kubectl delete service reload-app-server-service -n default || true

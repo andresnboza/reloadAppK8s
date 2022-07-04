@@ -34,23 +34,23 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: reload-app-client-service
+                name: reload-app-client
                 port:
                   number: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: reload-app-client-service-external
+  name: reload-app-client
   namespace: kube-system
 spec:
   type: ExternalName
-  externalName: reload-app-client-service.default.svc.cluster.local
+  externalName: reload-app-client.default.svc.cluster.local
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: reload-app-client-service
+  name: reload-app-client
   namespace: default
 spec:
   type: NodePort
@@ -60,5 +60,5 @@ spec:
       protocol: TCP
       targetPort: 80
   selector:
-    name: reload-app-client
+    app: reload-app-client
 ---
