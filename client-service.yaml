@@ -5,7 +5,7 @@ metadata:
     service-label-key: reload-app-client-service 
   name: reload-app-client-service
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
   - name: reload-app-client-port
     port: 80

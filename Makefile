@@ -39,3 +39,7 @@ push:
 	git add .
 	git commit -m "update"
 	git push
+
+
+deleteIngress:
+	kubectl delete ingress reload-app-client-ingress -n kube-system
