@@ -1,46 +1,64 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: reload-client
+  name: reload-app-client
+  namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: reload-client
+      app: reload-app-client
   template:
     metadata:
       labels:
-        app: reload-client
+        app: reload-app-client
     spec:
-      imagePullSecrets:
-        - name: aws-registry  
-      nodeSelector:
-        "beta.kubernetes.io/os": linux
       containers:
-        - name: reload-client
-          image: andresnboza/reload-app-client
-          resources:
-            limits:
-              cpu: 250m
-              memory: 512Mi
-            requests:
-              cpu: 250m
-              memory: 512Mi
-          ports:
-            - containerPort: 3000
-              name: reload-client       
-
+      - name: reload-app-client
+        image: andresnboza/reload-app-client
+        ports:
+          - containerPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: reload-app-client-ingress
+  namespace: kube-system
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: reloadapp.cr
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: reload-app-client-service
+                port:
+                  number: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: reload-client
+  name: reload-app-client-service-external
+  namespace: kube-system
 spec:
-  type: ClusterIP
+  type: ExternalName
+  externalName: reload-app-client-service.default.svc.cluster.local
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reload-app-client-service
+  namespace: default
+spec:
+  type: NodePort
   ports:
-    - protocol: "TCP"
+    - name: http
       port: 80
-      targetPort: 3000
+      protocol: TCP
+      targetPort: 80
   selector:
-    app: reload-client
+    name: reload-app-client
+---

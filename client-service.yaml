@@ -11,7 +11,7 @@ spec:
     port: 80
     protocol: TCP
   selector:
-    app: reload-app-client
+    name: reload-app-client
 ---
 apiVersion: v1
 kind: Service

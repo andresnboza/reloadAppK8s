@@ -4,14 +4,9 @@ metadata:
   name: reload-app-client-ingress
   namespace: kube-system
 spec:
-  defaultBackend:
-      resource:
-        apiGroup: k8s.example.com
-        kind: StorageBucket
-        name: static-assets
   ingressClassName: nginx
   rules:
-    - host: reloadapp.cr.146.190.0.144.nip.io
+    - host: reloadapp.cr
       http:
         paths:
           - path: /
