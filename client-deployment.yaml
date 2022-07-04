@@ -1,35 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: reload-app-client
+  name: deployment-name
 spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: reload-app-client
+  replicas: 1
   template:
     metadata:
       labels:
-        app: reload-app-client
+        label-key : label-value  
     spec:
       containers:
-      - name: reload-app-client
-        image: andresnboza/reload-app-client
-        ports:
+        - name: deploment-container-name
+          image: andresnboza/reload-app-client
+          imagePullPolicy: Always
+          ports:
           - containerPort: 80
-        env:
-        - name: BACKEND_API_HOST
-          value: reload-app-server.default.svc
-        - name: BACKEND_API_KEY
-          valueFrom:
-            secretKeyRef:
-                name: reload-app-client
-                key: BACKEND_API_KEY
-        volumeMounts:
-        - name: angular-env-file
-          mountPath: /app/.env
-          readOnly: true
-      volumes:
-      - name: angular-env-file
-        configMap:
-          name: angular-env
