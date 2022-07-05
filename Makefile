@@ -27,7 +27,11 @@ clientSecrets:
 	kubectl create secret generic angular-app --from-file=.env=.env
 
 
-version2: server2 client2
+version2: mongo2 server2 client2  
+digital_ocean_ingress_controler:
+	kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.2.1/deploy/static/provider/do/deploy.yaml
+mongo2:
+	kubectl apply -f mongodb-secrets.yaml
 server2:
 	kubectl apply -f server.yaml
 client2:
